@@ -27,12 +27,12 @@ const providerNamespaceOverrides: Record<string, string> = {
 };
 
 export function activate(context: vscode.ExtensionContext) {
-	const openTerraformDocsCommand = vscode.commands.registerCommand(
+	const openDocsCommand = vscode.commands.registerCommand(
 		"tfdoc.openDocs",
 		openDocs,
 	);
 
-	context.subscriptions.push(openTerraformDocsCommand);
+	context.subscriptions.push(openDocsCommand);
 }
 
 export function deactivate() {}
