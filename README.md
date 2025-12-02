@@ -14,7 +14,8 @@ By default this extension does not have a keyboard shortcut. To bind it to a key
 [
   {
     "key": "cmd+; cmd+t",
-    "command": "tfdoc.openDocs"
+    "command": "tfdoc.openDocs",
+    "when": "editorTextFocus && editorLangId == 'terraform'"
   }
 ]
 ```
