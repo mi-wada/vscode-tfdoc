@@ -28,4 +28,5 @@ By default this extension does not have a keyboard shortcut. To bind it to a key
 
 - [ ] Write tests.
 - [ ] Setup CI/CD.
+- [ ] Open documentation for parameters with fragment identifiers like a <https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/instance#region-1>.
 - [ ] Detect provider version from `required_providers` block in Terraform configuration.
