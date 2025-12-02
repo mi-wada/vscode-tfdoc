@@ -24,6 +24,12 @@ By default this extension does not have a keyboard shortcut. To bind it to a key
 
 - Visual Studio Code 1.106.1 or later.
 
+## Install
+
+```shell
+code --install-extension mi-wada.tfdoc
+```
+
 ## ToDo
 
 - [ ] Write tests.
