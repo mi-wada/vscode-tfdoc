@@ -2,6 +2,8 @@
 
 A VS Code extension to open Terraform Provider documentation in your browser.
 
+![tfdoc demo](./assets/tfdoc.gif)
+
 ## Features
 
 - Open the documentation of the Terraform resource or data source at the cursor position.
