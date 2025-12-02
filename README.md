@@ -22,3 +22,9 @@ By default this extension does not have a keyboard shortcut. To bind it to a key
 ## Requirements
 
 - Visual Studio Code 1.106.1 or later.
+
+## ToDo
+
+- [ ] Write tests.
+- [ ] Setup CI/CD.
+- [ ] Detect provider version from `required_providers` block in Terraform configuration.

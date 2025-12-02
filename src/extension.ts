@@ -1,9 +1,5 @@
 import * as vscode from "vscode";
 
-const COMMAND_IDS = {
-	OPEN_TERRAFORM_DOC: "tfdoc.openDocs",
-} as const;
-
 const STATUS_MESSAGE_DURATION_MS = 3000;
 const ERROR_NO_TARGET =
 	'Place the cursor on a Terraform resource/data source type string, e.g. "aws_instance".';
@@ -31,8 +27,8 @@ const providerNamespaceOverrides: Record<string, string> = {
 
 export function activate(context: vscode.ExtensionContext) {
 	const openTerraformDocsCommand = vscode.commands.registerCommand(
-		COMMAND_IDS.OPEN_TERRAFORM_DOC,
-		handleOpenTerraformDocument,
+		"tfdoc.openDocs",
+		openDocs,
 	);
 
 	context.subscriptions.push(openTerraformDocsCommand);
@@ -40,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-async function handleOpenTerraformDocument() {
+async function openDocs() {
 	const editor = vscode.window.activeTextEditor;
 	if (!editor) {
 		vscode.window.showErrorMessage("No active editor.");
