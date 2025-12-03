@@ -8,3 +8,6 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Keep @types/node version aligned with VS Code's bundled Node.js version.
+      - dependency-name: "@types/node"
