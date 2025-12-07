@@ -6,7 +6,6 @@ const ERROR_NO_TARGET =
 
 const RESOURCE_WORD_PATTERN = /[A-Za-z0-9_]+/;
 const RESOURCE_NAME_PATTERN = /^[A-Za-z0-9]+_[A-Za-z0-9_]+$/;
-const DEFAULT_PROVIDER_NAMESPACE = "hashicorp";
 
 type TerraformBlockKind = "resource" | "data-source";
 
@@ -19,14 +18,6 @@ interface TerraformIdentifier {
 	value: string;
 	range: vscode.Range;
 }
-
-const providerNamespaceOverrides: Record<string, string> = {
-	okta: "okta",
-	datadog: "DataDog",
-	docker: "kreuzwerker",
-	sakuracloud: "sacloud",
-	github: "integrations",
-};
 
 export function activate(context: vscode.ExtensionContext) {
 	const openDocsCommand = vscode.commands.registerCommand(
@@ -154,12 +145,21 @@ function buildTerraformDocsUri(
 	}
 
 	const resourcePath = rest.join("_");
-	const namespace = getProviderNamespace(provider);
+	const namespace = toNamespace(provider);
 	const segment = target.kind === "data-source" ? "data-sources" : "resources";
 	const url = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
 	return vscode.Uri.parse(url);
 }
 
-function getProviderNamespace(provider: string): string {
-	return providerNamespaceOverrides[provider] ?? DEFAULT_PROVIDER_NAMESPACE;
+const DEFAULT_NAMESPACE = "hashicorp";
+const PROVIDER_PREFIX_TO_NAMESPACE: Record<string, string> = {
+	okta: "okta",
+	datadog: "DataDog",
+	docker: "kreuzwerker",
+	sakuracloud: "sacloud",
+	github: "integrations",
+};
+
+function toNamespace(providerPrefix: string): string {
+	return PROVIDER_PREFIX_TO_NAMESPACE[providerPrefix] ?? DEFAULT_NAMESPACE;
 }
