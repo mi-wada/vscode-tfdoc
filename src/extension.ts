@@ -5,10 +5,6 @@ import {
 	type TerraformTarget,
 } from "./lib/terraformDocs";
 
-const STATUS_MESSAGE_DURATION_MS = 3000;
-const ERROR_NO_TARGET =
-	'Place the cursor on a Terraform resource/data source type string, e.g. "aws_instance".';
-
 const RESOURCE_WORD_PATTERN = /[A-Za-z0-9_]+/;
 const RESOURCE_NAME_PATTERN = /^[A-Za-z0-9]+_[A-Za-z0-9_]+$/;
 
@@ -37,7 +33,9 @@ async function openDocs() {
 
 	const target = resolveTerraformTarget(editor);
 	if (!target) {
-		vscode.window.showErrorMessage(ERROR_NO_TARGET);
+		vscode.window.showErrorMessage(
+			'Place the cursor on a Terraform resource/data source type string, e.g. "aws_instance".',
+		);
 		return;
 	}
 
@@ -59,7 +57,7 @@ async function openDocs() {
 	const noun = target.kind === "data-source" ? "data source" : "resource";
 	vscode.window.setStatusBarMessage(
 		`Opening Terraform ${noun} docs for ${target.typeName}...`,
-		STATUS_MESSAGE_DURATION_MS,
+		3000,
 	);
 }
 
