@@ -36,7 +36,6 @@
 	"scripts": {
 		"vscode:prepublish": "npm run package",
 		"compile": "npm run check-types && npm run lint && node esbuild.js",
-		"watch": "npm-run-all -p watch:*",
 		"watch:esbuild": "node esbuild.js --watch",
 		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
 		"package": "npm run check-types && npm run lint && node esbuild.js --production",
@@ -57,7 +56,6 @@
 		"@vscode/test-cli": "0.0.12",
 		"@vscode/test-electron": "2.5.2",
 		"esbuild": "0.27.1",
-		"npm-run-all": "4.1.5",
 		"typescript": "5.9.3"
 	}
 }
