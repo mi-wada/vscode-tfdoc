@@ -52,15 +52,29 @@ async function openDocs() {
 function resolveTerraformTarget(
 	editor: vscode.TextEditor,
 ): TerraformTarget | undefined {
-	const identifier = extractTerraformIdentifier(
-		editor.document,
-		editor.selection.active,
-	);
+	const document = editor.document;
+	const position = editor.selection.active;
+
+	// First try to extract parameter name
+	const parameter = extractParameterName(document, position);
+	if (parameter) {
+		const block = findEnclosingBlock(document, position);
+		if (block) {
+			return {
+				typeName: block.typeName,
+				kind: block.kind,
+				parameter: parameter,
+			};
+		}
+	}
+
+	// If not a parameter, try to extract resource/data source type name
+	const identifier = extractTerraformIdentifier(document, position);
 	if (!identifier) {
 		return undefined;
 	}
 
-	const kind = detectBlockKind(editor.document, identifier.range);
+	const kind = detectBlockKind(document, identifier.range);
 	if (!kind) {
 		return undefined;
 	}
@@ -126,4 +140,61 @@ function isQuoted(
 	const charAfter =
 		endCharacter < lineText.length ? lineText.charAt(endCharacter) : "";
 	return charBefore === '"' && charAfter === '"';
+}
+
+const PARAMETER_PATTERN = /[A-Za-z0-9_]+/;
+
+function extractParameterName(
+	document: vscode.TextDocument,
+	position: vscode.Position,
+): string | undefined {
+	const wordRange = document.getWordRangeAtPosition(
+		position,
+		PARAMETER_PATTERN,
+	);
+	if (!wordRange) {
+		return undefined;
+	}
+
+	const word = document.getText(wordRange).trim();
+	const lineText = document.lineAt(position.line).text;
+
+	// Check if this is a parameter assignment (parameter_name = value)
+	const parameterMatch = lineText.match(/^\s*([A-Za-z0-9_]+)\s*=/);
+	if (parameterMatch && parameterMatch[1] === word) {
+		return word;
+	}
+
+	return undefined;
+}
+
+interface BlockInfo {
+	typeName: string;
+	kind: TerraformBlockKind;
+}
+
+function findEnclosingBlock(
+	document: vscode.TextDocument,
+	position: vscode.Position,
+): BlockInfo | undefined {
+	// Search upward for resource or data block
+	for (let lineNumber = position.line; lineNumber >= 0; lineNumber--) {
+		const lineText = document.lineAt(lineNumber).text;
+
+		// Match resource "type_name" "name" { or data "type_name" "name" {
+		const blockMatch = lineText.match(
+			/^\s*(resource|data)\s+"([A-Za-z0-9_]+)"\s+"[^"]+"\s*\{/,
+		);
+		if (blockMatch) {
+			const kind: TerraformBlockKind =
+				blockMatch[1] === "data" ? "data-source" : "resource";
+			const typeName = blockMatch[2];
+
+			if (typeName && RESOURCE_NAME_PATTERN.test(typeName)) {
+				return { typeName, kind };
+			}
+		}
+	}
+
+	return undefined;
 }

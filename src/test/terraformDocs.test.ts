@@ -40,4 +40,34 @@ suite("Terraform docs helpers", () => {
 
 		assert.strictEqual(url, undefined);
 	});
+
+	test("builds resource URL with parameter fragment", () => {
+		const target: TerraformTarget = {
+			typeName: "aws_instance",
+			kind: "resource",
+			parameter: "region",
+		};
+
+		const url = buildTerraformDocsUrl(target);
+
+		assert.strictEqual(
+			url,
+			"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#region-1",
+		);
+	});
+
+	test("builds data source URL with parameter fragment", () => {
+		const target: TerraformTarget = {
+			typeName: "aws_instance",
+			kind: "data-source",
+			parameter: "ami",
+		};
+
+		const url = buildTerraformDocsUrl(target);
+
+		assert.strictEqual(
+			url,
+			"https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/instance#ami-1",
+		);
+	});
 });
