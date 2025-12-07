@@ -36,5 +36,9 @@ code --install-extension mi-wada.tfdoc
 
 - [ ] Write tests.
 - [ ] Setup CI/CD.
-- [ ] Open documentation for parameters with fragment identifiers like a <https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/instance#region-1>.
 - [ ] Detect provider version from `required_providers` block in Terraform configuration.
+
+## Known Issues
+
+- When a resource or data source has multiple parameters with the same name, the extension cannot navigate to the correct parameter's documentation. Currently, it will navigate to the first occurrence of that parameter.
+  - Example: <https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/instance#device_name-2>
