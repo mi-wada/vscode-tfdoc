@@ -3,7 +3,7 @@ import {
 	buildTerraformDocsUrl,
 	type TerraformBlockKind,
 	type TerraformTarget,
-} from "./lib/terraformDocs";
+} from "./terraformDocs";
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(

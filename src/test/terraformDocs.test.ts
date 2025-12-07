@@ -1,8 +1,5 @@
 import * as assert from "node:assert";
-import {
-	buildTerraformDocsUrl,
-	type TerraformTarget,
-} from "../lib/terraformDocs";
+import { buildTerraformDocsUrl, type TerraformTarget } from "../terraformDocs";
 
 suite("Terraform docs helpers", () => {
 	test("builds resource URL with default namespace", () => {
