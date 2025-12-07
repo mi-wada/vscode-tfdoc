@@ -55,7 +55,6 @@ function resolveTerraformTarget(
 	const document = editor.document;
 	const position = editor.selection.active;
 
-	// First try to extract parameter name
 	const parameter = extractParameterName(document, position);
 	if (parameter) {
 		const block = findEnclosingBlock(document, position);
@@ -68,7 +67,6 @@ function resolveTerraformTarget(
 		}
 	}
 
-	// If not a parameter, try to extract resource/data source type name
 	const identifier = extractTerraformIdentifier(document, position);
 	if (!identifier) {
 		return undefined;
@@ -159,7 +157,6 @@ function extractParameterName(
 	const word = document.getText(wordRange).trim();
 	const lineText = document.lineAt(position.line).text;
 
-	// Check if this is a parameter assignment (parameter_name = value)
 	const parameterMatch = lineText.match(/^\s*([A-Za-z0-9_]+)\s*=/);
 	if (parameterMatch && parameterMatch[1] === word) {
 		return word;
@@ -177,11 +174,9 @@ function findEnclosingBlock(
 	document: vscode.TextDocument,
 	position: vscode.Position,
 ): BlockInfo | undefined {
-	// Search upward for resource or data block
 	for (let lineNumber = position.line; lineNumber >= 0; lineNumber--) {
 		const lineText = document.lineAt(lineNumber).text;
 
-		// Match resource "type_name" "name" { or data "type_name" "name" {
 		const blockMatch = lineText.match(
 			/^\s*(resource|data)\s+"([A-Za-z0-9_]+)"\s+"[^"]+"\s*\{/,
 		);
