@@ -152,7 +152,7 @@ function buildTerraformDocsUri(
 }
 
 const DEFAULT_NAMESPACE = "hashicorp";
-const PROVIDER_PREFIX_TO_NAMESPACE: Record<string, string> = {
+const PROVIDER_TO_NAMESPACE: Record<string, string> = {
 	okta: "okta",
 	datadog: "DataDog",
 	docker: "kreuzwerker",
@@ -160,6 +160,6 @@ const PROVIDER_PREFIX_TO_NAMESPACE: Record<string, string> = {
 	github: "integrations",
 };
 
-function toNamespace(providerPrefix: string): string {
-	return PROVIDER_PREFIX_TO_NAMESPACE[providerPrefix] ?? DEFAULT_NAMESPACE;
+function toNamespace(provider: string): string {
+	return PROVIDER_TO_NAMESPACE[provider] ?? DEFAULT_NAMESPACE;
 }
