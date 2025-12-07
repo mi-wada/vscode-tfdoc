@@ -15,7 +15,7 @@ export function buildTerraformDocsUrl(
 	}
 
 	const resourcePath = rest.join("_");
-	const namespace = toNamespace(provider);
+	const namespace = providerToNamespace(provider);
 	const segment = target.kind === "data-source" ? "data-sources" : "resources";
 	return `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
 }
@@ -29,6 +29,6 @@ export const PROVIDER_TO_NAMESPACE: Record<string, string> = {
 	github: "integrations",
 };
 
-export function toNamespace(provider: string): string {
+export function providerToNamespace(provider: string): string {
 	return PROVIDER_TO_NAMESPACE[provider] ?? DEFAULT_NAMESPACE;
 }
