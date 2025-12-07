@@ -43,9 +43,8 @@ async function openDocs() {
 		return;
 	}
 
-	const noun = target.kind === "data-source" ? "data source" : "resource";
 	vscode.window.setStatusBarMessage(
-		`Opening Terraform ${noun} docs for ${target.typeName}...`,
+		`Opening Terraform docs for ${target.typeName}...`,
 		3000,
 	);
 }
