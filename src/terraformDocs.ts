@@ -3,6 +3,7 @@ export type TerraformBlockKind = "resource" | "data-source";
 export interface TerraformTarget {
 	typeName: string;
 	kind: TerraformBlockKind;
+	parameter?: string;
 }
 
 export function buildTerraformDocsUrl(
@@ -15,9 +16,14 @@ export function buildTerraformDocsUrl(
 	}
 
 	const resourcePath = rest.join("_");
-	const namespace = toNamespace(provider);
+	const namespace = providerToNamespace(provider);
 	const segment = target.kind === "data-source" ? "data-sources" : "resources";
-	return `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
+	const baseUrl = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
+
+	if (!target.parameter) {
+		return baseUrl;
+	}
+	return `${baseUrl}#${target.parameter}-1`;
 }
 
 export const DEFAULT_NAMESPACE = "hashicorp";
@@ -29,6 +35,6 @@ export const PROVIDER_TO_NAMESPACE: Record<string, string> = {
 	github: "integrations",
 };
 
-export function toNamespace(provider: string): string {
+export function providerToNamespace(provider: string): string {
 	return PROVIDER_TO_NAMESPACE[provider] ?? DEFAULT_NAMESPACE;
 }
