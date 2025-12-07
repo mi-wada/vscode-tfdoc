@@ -44,7 +44,7 @@ async function openDocs() {
 		return;
 	}
 
-	const opened = await vscode.env.openExternal(docUri);
+	const opened = await vscode.env.openExternal(vscode.Uri.parse(docUri));
 	if (!opened) {
 		vscode.window.showErrorMessage(`Failed to open ${docUri.toString()}.`);
 		return;
@@ -134,9 +134,7 @@ interface TerraformTarget {
 }
 type TerraformBlockKind = "resource" | "data-source";
 
-function buildTerraformDocsUri(
-	target: TerraformTarget,
-): vscode.Uri | undefined {
+function buildTerraformDocsUri(target: TerraformTarget): string | undefined {
 	const lower = target.typeName.toLowerCase();
 	const [provider, ...rest] = lower.split("_");
 	if (!provider || rest.length === 0) {
@@ -147,7 +145,7 @@ function buildTerraformDocsUri(
 	const namespace = toNamespace(provider);
 	const segment = target.kind === "data-source" ? "data-sources" : "resources";
 	const url = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
-	return vscode.Uri.parse(url);
+	return url;
 }
 
 const DEFAULT_NAMESPACE = "hashicorp";
