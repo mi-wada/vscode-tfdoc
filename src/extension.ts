@@ -7,13 +7,6 @@ const ERROR_NO_TARGET =
 const RESOURCE_WORD_PATTERN = /[A-Za-z0-9_]+/;
 const RESOURCE_NAME_PATTERN = /^[A-Za-z0-9]+_[A-Za-z0-9_]+$/;
 
-type TerraformBlockKind = "resource" | "data-source";
-
-interface TerraformTarget {
-	typeName: string;
-	kind: TerraformBlockKind;
-}
-
 interface TerraformIdentifier {
 	value: string;
 	range: vscode.Range;
@@ -134,6 +127,12 @@ function isQuoted(
 		endCharacter < lineText.length ? lineText.charAt(endCharacter) : "";
 	return charBefore === '"' && charAfter === '"';
 }
+
+interface TerraformTarget {
+	typeName: string;
+	kind: TerraformBlockKind;
+}
+type TerraformBlockKind = "resource" | "data-source";
 
 function buildTerraformDocsUri(
 	target: TerraformTarget,
