@@ -1,4 +1,9 @@
 import * as vscode from "vscode";
+import {
+	buildTerraformDocsUrl,
+	type TerraformBlockKind,
+	type TerraformTarget,
+} from "./lib/terraformDocs";
 
 const STATUS_MESSAGE_DURATION_MS = 3000;
 const ERROR_NO_TARGET =
@@ -36,17 +41,18 @@ async function openDocs() {
 		return;
 	}
 
-	const docUri = buildTerraformDocsUri(target);
-	if (!docUri) {
+	const docUrl = buildTerraformDocsUrl(target);
+	if (!docUrl) {
 		vscode.window.showErrorMessage(
 			`Could not derive Terraform Registry URL for "${target.typeName}".`,
 		);
 		return;
 	}
 
-	const opened = await vscode.env.openExternal(vscode.Uri.parse(docUri));
+	const docUri = vscode.Uri.parse(docUrl);
+	const opened = await vscode.env.openExternal(docUri);
 	if (!opened) {
-		vscode.window.showErrorMessage(`Failed to open ${docUri.toString()}.`);
+		vscode.window.showErrorMessage(`Failed to open ${docUrl}.`);
 		return;
 	}
 
@@ -126,37 +132,4 @@ function isQuoted(
 	const charAfter =
 		endCharacter < lineText.length ? lineText.charAt(endCharacter) : "";
 	return charBefore === '"' && charAfter === '"';
-}
-
-interface TerraformTarget {
-	typeName: string;
-	kind: TerraformBlockKind;
-}
-type TerraformBlockKind = "resource" | "data-source";
-
-function buildTerraformDocsUri(target: TerraformTarget): string | undefined {
-	const lower = target.typeName.toLowerCase();
-	const [provider, ...rest] = lower.split("_");
-	if (!provider || rest.length === 0) {
-		return undefined;
-	}
-
-	const resourcePath = rest.join("_");
-	const namespace = toNamespace(provider);
-	const segment = target.kind === "data-source" ? "data-sources" : "resources";
-	const url = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
-	return url;
-}
-
-const DEFAULT_NAMESPACE = "hashicorp";
-const PROVIDER_TO_NAMESPACE: Record<string, string> = {
-	okta: "okta",
-	datadog: "DataDog",
-	docker: "kreuzwerker",
-	sakuracloud: "sacloud",
-	github: "integrations",
-};
-
-function toNamespace(provider: string): string {
-	return PROVIDER_TO_NAMESPACE[provider] ?? DEFAULT_NAMESPACE;
 }
