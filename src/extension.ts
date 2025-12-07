@@ -25,6 +25,7 @@ const providerNamespaceOverrides: Record<string, string> = {
 	datadog: "DataDog",
 	docker: "kreuzwerker",
 	sakuracloud: "sacloud",
+	github: "integrations",
 };
 
 export function activate(context: vscode.ExtensionContext) {
