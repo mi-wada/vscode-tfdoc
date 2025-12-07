@@ -5,21 +5,10 @@ import {
 	type TerraformTarget,
 } from "./lib/terraformDocs";
 
-const RESOURCE_WORD_PATTERN = /[A-Za-z0-9_]+/;
-const RESOURCE_NAME_PATTERN = /^[A-Za-z0-9]+_[A-Za-z0-9_]+$/;
-
-interface TerraformIdentifier {
-	value: string;
-	range: vscode.Range;
-}
-
 export function activate(context: vscode.ExtensionContext) {
-	const openDocsCommand = vscode.commands.registerCommand(
-		"tfdoc.openDocs",
-		openDocs,
+	context.subscriptions.push(
+		vscode.commands.registerCommand("tfdoc.openDocs", openDocs),
 	);
-
-	context.subscriptions.push(openDocsCommand);
 }
 
 export function deactivate() {}
@@ -78,6 +67,14 @@ function resolveTerraformTarget(
 	}
 
 	return { typeName: identifier.value, kind };
+}
+
+const RESOURCE_WORD_PATTERN = /[A-Za-z0-9_]+/;
+const RESOURCE_NAME_PATTERN = /^[A-Za-z0-9]+_[A-Za-z0-9_]+$/;
+
+interface TerraformIdentifier {
+	value: string;
+	range: vscode.Range;
 }
 
 function extractTerraformIdentifier(
