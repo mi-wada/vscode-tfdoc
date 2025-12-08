@@ -9,16 +9,15 @@ export interface TerraformTarget {
 export function buildTerraformDocsUrl(
 	target: TerraformTarget,
 ): string | undefined {
-	const lower = target.typeName.toLowerCase();
-	const [provider, ...rest] = lower.split("_");
-	if (!provider || rest.length === 0) {
+	const [provider, ...resourceParts] = target.typeName.toLowerCase().split("_");
+	if (!provider || resourceParts.length === 0) {
 		return undefined;
 	}
 
-	const resourcePath = rest.join("_");
 	const namespace = providerToNamespace(provider);
 	const segment = target.kind === "data-source" ? "data-sources" : "resources";
-	const baseUrl = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resourcePath}`;
+	const resource = resourceParts.join("_");
+	const baseUrl = `https://registry.terraform.io/providers/${namespace}/${provider}/latest/docs/${segment}/${resource}`;
 
 	if (!target.parameter) {
 		return baseUrl;
