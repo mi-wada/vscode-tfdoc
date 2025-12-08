@@ -1,10 +1,10 @@
-export type TerraformBlockKind = "resource" | "data-source";
-
 export interface TerraformTarget {
 	typeName: string;
 	kind: TerraformBlockKind;
 	parameter?: string;
 }
+
+export type TerraformBlockKind = "resource" | "data-source";
 
 export function buildTerraformDocsUrl(
 	target: TerraformTarget,
