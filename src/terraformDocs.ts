@@ -23,6 +23,7 @@ export function buildTerraformDocsUrl(
 	if (!target.parameter) {
 		return baseUrl;
 	}
+	// FIXME: This naive logic of appending a -1 suffix will break for resources/data sources that have multiple parameters with the same name.
 	return `${baseUrl}#${target.parameter}-1`;
 }
 

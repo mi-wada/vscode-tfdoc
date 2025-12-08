@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.4] - 2025-12-08
+
+- Support to open a parameter-specific provider documentation when hovering over a resource/data-source parameter.
+
 ## [0.0.3] - 2025-12-07
 
 - Support [integrations/github](https://registry.terraform.io/providers/integrations/github/latest/docs) provider.

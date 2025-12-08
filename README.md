@@ -32,12 +32,6 @@ By default this extension does not have a keyboard shortcut. To bind it to a key
 code --install-extension mi-wada.tfdoc
 ```
 
-## ToDo
-
-- [ ] Write tests.
-- [ ] Setup CI/CD.
-- [ ] Detect provider version from `required_providers` block in Terraform configuration.
-
 ## Known Issues
 
 - When a resource or data source has multiple parameters with the same name, the extension cannot navigate to the correct parameter's documentation. Currently, it will navigate to the first occurrence of that parameter.
