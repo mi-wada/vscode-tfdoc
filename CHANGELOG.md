@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.5] - 2025-12-10
+
+- Bind default keyboard shortcut `Ctrl+; Ctrl+T` (Mac: `Cmd+; Cmd+T`) to run the `tfdoc.openDocs` command.
+
 ## [0.0.4] - 2025-12-08
 
 - Support to open a parameter-specific provider documentation when hovering over a resource/data-source parameter.
