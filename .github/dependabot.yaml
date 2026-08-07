@@ -4,6 +4,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
   - package-ecosystem: npm
     directory: /
     schedule:
@@ -11,3 +15,9 @@ updates:
     ignore:
       # Keep @types/node version aligned with VS Code's bundled Node.js version.
       - dependency-name: "@types/node"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@types/node"
